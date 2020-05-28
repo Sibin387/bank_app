@@ -10,11 +10,12 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class LoginComponent implements OnInit {
 
   loginForm = this.fb.group({
-    accno : ['hsnAc1001', Validators.required],
-    mpin : ['1001', Validators.minLength(3)]
+    accno : ['', [Validators.required, Validators.pattern('[a-zA-Z0-9 ]*')]],
+    mpin : ['', [Validators.required, Validators.minLength(3)]]
   })
 
   error:string="";
+  
   constructor(private ds:DataService, private fb:FormBuilder) { }
 
   ngOnInit(): void {
@@ -29,13 +30,17 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    console.log(this.loginForm.get("mpin").errors)
+    console.log(this.loginForm.get("accno").errors)
     this.error="";
+    if(this.loginForm.get("accno").errors){
+      if(this.loginForm.get("accno").errors.required){
+        this.error="accno is required";
+      }else if(this.loginForm.get("accno").errors.email){
+        this.error="accno is invalid";
+      }
+    }
     if(this.loginForm.get("mpin").errors){
       this.error="You have error in mpin";
-    }
-    if(this.loginForm.get("accno").errors){
-      this.error="You have error in accno";
     }
     // if(this.loginForm.valid){
     //   this.error="";
@@ -68,5 +73,8 @@ export class LoginComponent implements OnInit {
     //   alert("Invalid username")
     //     //swal("Login Failed!!!", "Inavlid Username ");
     // }
+  }
+  getError(controlName){
+    return this.loginForm.get(controlName).errors;
   }
 }
