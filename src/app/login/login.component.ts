@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,9 @@ export class LoginComponent implements OnInit {
 
   error:string="";
   
-  constructor(private ds:DataService, private fb:FormBuilder) { }
+  constructor(private ds:DataService, 
+    private fb:FormBuilder,
+    private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -30,7 +33,12 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    this.ds.login(this.loginForm.value.accno,this.loginForm.value.mpin);
+    const success= this.ds.login(this.loginForm.value.accno,this.loginForm.value.mpin);
+    if(success){
+      this.router.navigate(['/home']);
+    }else{
+      alert("Invalid credentials");
+    }
   }
   getError(controlName){
     return this.loginForm.get(controlName).errors;

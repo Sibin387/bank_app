@@ -35,20 +35,12 @@ export class DataService {
       const pin = this.accountDetails[accno]["mpin"];
       if(pin == mpin) 
       {
-        alert("success")
-          // swal(`Welcome ${Data.accountDetails[accno]["name"]}`, "Successfull Login", "success")
-          // .then((value) => {
-          // window.location.href="/home/neethi/Desktop/Mean_Stack/Assignment/Bank/bankTrans.html";
-          // });
+        return true;
       }
       else{
-        alert("Error")
-          // swal("Login Failed!!!", "Invalid Mpin");
+        return false;
       } 
     }
-    else{
-      alert("Invalid username")
-        //swal("Login Failed!!!", "Inavlid Username ");
-    }
+    return false;
   }
 }
