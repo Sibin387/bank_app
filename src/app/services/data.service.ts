@@ -11,8 +11,44 @@ export class DataService {
     hsnAc1004: { name: "User4", mpin: 1004, balance: 35000 },
     hsnAc1005: { name: "User5", mpin: 1005, balance: 12000 }
   }
-  constructor() { }
+  constructor() {
+    const accountDetails = localStorage.getItem('accountDetails');
+    const data = JSON.parse(accountDetails);
+    if(data){
+      this.accountDetails = data;
+    }
+  }
   showSuccess(){
     alert("Success from service")
+  }
+  register(data){
+    this.accountDetails[data.accno]={
+      name: `${data.firstName} ${data.lastName}`,
+      mpin: data.mpin,
+      balance: 0,
+    };
+    localStorage.setItem('accountDetails', JSON.stringify(this.accountDetails));
+  }
+  login(accno, mpin){
+    if(accno in this.accountDetails)
+    {
+      const pin = this.accountDetails[accno]["mpin"];
+      if(pin == mpin) 
+      {
+        alert("success")
+          // swal(`Welcome ${Data.accountDetails[accno]["name"]}`, "Successfull Login", "success")
+          // .then((value) => {
+          // window.location.href="/home/neethi/Desktop/Mean_Stack/Assignment/Bank/bankTrans.html";
+          // });
+      }
+      else{
+        alert("Error")
+          // swal("Login Failed!!!", "Invalid Mpin");
+      } 
+    }
+    else{
+      alert("Invalid username")
+        //swal("Login Failed!!!", "Inavlid Username ");
+    }
   }
 }
