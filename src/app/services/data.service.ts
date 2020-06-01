@@ -58,6 +58,10 @@ export class DataService {
     localStorage.setItem('accountDetails', JSON.stringify(this.accountDetails));
   }
 
+  logout(){
+    localStorage.removeItem('accountDetails');
+  }
+
   deposit(amount, mpin){
     if(this.loggedInUser.mpin!=mpin){
       alert("Invalid mpin");
