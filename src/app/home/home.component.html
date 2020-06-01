@@ -38,18 +38,18 @@
     <div class="row">
         <div class="content-border col-sm-12 col-md-4 offset-md-4 jumbotron jumbotron-fluid ">
             <div class="form-group">
-                <input type="text" id="amt" placeholder="Amount">
+                <input type="text" id="amt" placeholder="Amount" #amount>
             </div>
             <div class="form-group">
-                <input type="password" id="mpin" placeholder="Mpin">
+                <input type="password" id="mpin" placeholder="Mpin" #mpin>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-info" onclick="Transactions.withdraw()">Withdraw</button>
-                <button type="submit" class="btn btn-info" onclick="Transactions.deposit()">Deposit</button>
+                <button type="button" class="btn btn-info" (click)="withdraw(amount.value, mpin.value)">Withdraw</button>
+                <button type="button" class="btn btn-info" (click)="deposit(amount.value, mpin.value)">Deposit</button>
 
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-info" onclick="Transactions.balanceEn()">Balance Enquiry</button>
+                <button type="button" class="btn btn-info" (click)="checkBalance()">Balance Enquiry</button>
             </div>
         </div>
     </div>

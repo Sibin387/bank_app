@@ -11,11 +11,17 @@ export class DataService {
     hsnAc1004: { name: "User4", mpin: 1004, balance: 35000 },
     hsnAc1005: { name: "User5", mpin: 1005, balance: 12000 }
   }
+  loggedInUser = null;
   constructor() {
     const accountDetails = localStorage.getItem('accountDetails');
     const data = JSON.parse(accountDetails);
     if(data){
       this.accountDetails = data;
+    }
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    const loggedInUserData = JSON.parse(loggedInUser);
+    if(loggedInUserData){
+      this.loggedInUser = loggedInUserData;
     }
   }
   showSuccess(){
@@ -35,6 +41,9 @@ export class DataService {
       const pin = this.accountDetails[accno]["mpin"];
       if(pin == mpin) 
       {
+        this.loggedInUser = this.accountDetails[accno];
+        this.saveUserData();
+        localStorage.setItem('accno',accno);
         return true;
       }
       else{
@@ -42,5 +51,39 @@ export class DataService {
       } 
     }
     return false;
+  }
+
+  saveUserData(){
+    localStorage.setItem('loggedInUser', JSON.stringify(this.loggedInUser));
+    localStorage.setItem('accountDetails', JSON.stringify(this.accountDetails));
+  }
+
+  deposit(amount, mpin){
+    if(this.loggedInUser.mpin!=mpin){
+      alert("Invalid mpin");
+      return false;
+    }
+    this.loggedInUser.balance= parseFloat(this.loggedInUser.balance) +parseFloat(amount);
+    const accno = localStorage.getItem('accno');
+    this.accountDetails[accno].balance=this.loggedInUser.balance;
+    this.saveUserData();
+    alert("Amount added successfully");
+  }
+
+  withdraw(amount, mpin){
+    if(this.loggedInUser.mpin!=mpin){
+      alert("Invalid mpin");
+      return false;
+    }
+    if(this.loggedInUser.balance<amount){
+      alert("Insufficient balance");
+      return false;
+    }
+    this.loggedInUser.balance= parseFloat(this.loggedInUser.balance) -parseFloat(amount);
+    const accno = localStorage.getItem('accno');
+    this.accountDetails[accno].balance=this.loggedInUser.balance;
+    this.saveUserData();
+    alert("Amount withdrawn successfully");
+
   }
 }
