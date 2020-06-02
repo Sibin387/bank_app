@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-history',
@@ -7,13 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HistoryComponent implements OnInit {
   page="history";
-  items = [
-    'name1',
-    'name2',
-    'name3',
-    'name4',
-  ]
-  constructor() { }
+  accountDetails:any = {};
+  constructor(private dataService: DataService) {
+    this.accountDetails = dataService.getAccountDetails();
+  }
 
   ngOnInit(): void {
     

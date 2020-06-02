@@ -24,9 +24,16 @@ export class DataService {
       this.loggedInUser = loggedInUserData;
     }
   }
+
   showSuccess(){
     alert("Success from service")
   }
+
+  getAccountDetails(){
+    const accno = localStorage.getItem('accno');
+    return this.accountDetails[accno];
+  }
+
   register(data){
     this.accountDetails[data.accno]={
       name: `${data.firstName} ${data.lastName}`,
