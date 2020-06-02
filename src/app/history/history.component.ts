@@ -11,6 +11,7 @@ export class HistoryComponent implements OnInit {
   accountDetails:any = {};
   constructor(private dataService: DataService) {
     this.accountDetails = dataService.getAccountDetails();
+    console.log(this.accountDetails);
   }
 
   ngOnInit(): void {

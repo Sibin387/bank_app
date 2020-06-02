@@ -12,6 +12,8 @@ export class DataService {
     hsnAc1005: { name: "User5", mpin: 1005, balance: 12000, history:[] }
   }
   loggedInUser = null;
+  accno = null;
+  
   constructor() {
     const accountDetails = localStorage.getItem('accountDetails');
     const data = JSON.parse(accountDetails);
@@ -23,6 +25,7 @@ export class DataService {
     if(loggedInUserData){
       this.loggedInUser = loggedInUserData;
     }
+    this.accno = localStorage.getItem('accno');
   }
 
   showSuccess(){
@@ -30,8 +33,13 @@ export class DataService {
   }
 
   getAccountDetails(){
-    const accno = localStorage.getItem('accno');
-    return this.accountDetails[accno];
+    return this.accountDetails[this.accno];
+  }
+
+  saveAccountDetails(accountDetails){
+    this.accountDetails[this.accno]=accountDetails;
+    this.saveUserData();
+    alert("Account details saved successfully");
   }
 
   register(data){
@@ -51,6 +59,7 @@ export class DataService {
         this.loggedInUser = this.accountDetails[accno];
         this.saveUserData();
         localStorage.setItem('accno',accno);
+        this.accno = accno;
         return true;
       }
       else{
