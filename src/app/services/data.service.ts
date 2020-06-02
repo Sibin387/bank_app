@@ -5,11 +5,11 @@ import { Injectable } from '@angular/core';
 })
 export class DataService {
   accountDetails = {
-    hsnAc1001: { name: "User1", mpin: 1001, balance: 10000 },
-    hsnAc1002: { name: "User2", mpin: 1002, balance: 20000 },
-    hsnAc1003: { name: "User3", mpin: 1003, balance: 15000 },
-    hsnAc1004: { name: "User4", mpin: 1004, balance: 35000 },
-    hsnAc1005: { name: "User5", mpin: 1005, balance: 12000 }
+    hsnAc1001: { name: "User1", mpin: 1001, balance: 10000, history:[] },
+    hsnAc1002: { name: "User2", mpin: 1002, balance: 20000, history:[] },
+    hsnAc1003: { name: "User3", mpin: 1003, balance: 15000, history:[] },
+    hsnAc1004: { name: "User4", mpin: 1004, balance: 35000, history:[] },
+    hsnAc1005: { name: "User5", mpin: 1005, balance: 12000, history:[] }
   }
   loggedInUser = null;
   constructor() {
@@ -60,6 +60,7 @@ export class DataService {
 
   logout(){
     localStorage.removeItem('accountDetails');
+    localStorage.removeItem('accno');
   }
 
   deposit(amount, mpin){
@@ -67,9 +68,14 @@ export class DataService {
       alert("Invalid mpin");
       return false;
     }
-    this.loggedInUser.balance= parseFloat(this.loggedInUser.balance) +parseFloat(amount);
+    this.loggedInUser.balance= parseFloat(this.loggedInUser.balance)+parseFloat(amount);
     const accno = localStorage.getItem('accno');
     this.accountDetails[accno].balance=this.loggedInUser.balance;
+    if(!this.accountDetails[accno].history){
+      this.accountDetails[accno].history=[];
+    }
+    this.accountDetails[accno].history.push({ amount:amount, type:'credit', date: new Date()});
+    console.log(this.accountDetails[accno]);
     this.saveUserData();
     alert("Amount added successfully");
   }
@@ -86,8 +92,12 @@ export class DataService {
     this.loggedInUser.balance= parseFloat(this.loggedInUser.balance) -parseFloat(amount);
     const accno = localStorage.getItem('accno');
     this.accountDetails[accno].balance=this.loggedInUser.balance;
+    if(!this.accountDetails[accno].history){
+      this.accountDetails[accno].history=[];
+    }
+    this.accountDetails[accno].history.push({ amount:amount, type:'debit', date: new Date()});
+    console.log(this.accountDetails[accno]);
     this.saveUserData();
     alert("Amount withdrawn successfully");
-
   }
 }
