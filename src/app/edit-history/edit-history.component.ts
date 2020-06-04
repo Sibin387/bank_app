@@ -40,6 +40,5 @@ export class EditHistoryComponent implements OnInit {
   onSubmit(){
     this.dataService.saveHistory(this.id, this.editForm.value);
     this.router.navigate(['history']);
-    alert("Completed");
   }
 }
