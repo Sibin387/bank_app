@@ -16,12 +16,14 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  
   onHeaderClick(e){
     console.log(e);
     this.clickCount++;
   }
 
-  onSave(){
+  onSave(value){
+    this.accountDetails.name = value;
     this.dataService.saveAccountDetails(this.accountDetails);
   }
 }

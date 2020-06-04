@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-history',
@@ -9,7 +10,7 @@ import { DataService } from '../services/data.service';
 export class HistoryComponent implements OnInit {
   page="history";
   accountDetails:any = {};
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private router:Router) {
     this.accountDetails = dataService.getAccountDetails();
     console.log(this.accountDetails);
   }
@@ -18,4 +19,7 @@ export class HistoryComponent implements OnInit {
     
   }
 
+  edit(id){
+    this.router.navigate(['/edit-history',id]);
+  }
 }

@@ -1,10 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-info">
-
-    <a *ngIf="page=='profile'" class="navbar-brand" routerLink="/home">HSN Bank Profile Page</a>
-    <a *ngIf="page=='home'" class="navbar-brand" routerLink="/home">HSN Bank Home Page</a>
-    <a *ngIf="page=='home'" class="navbar-brand" routerLink="/home">HSN Bank Home Page</a>
-    <a *ngIf="page=='history'" class="navbar-brand" routerLink="/home">Transaction history</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    
+    <a class="navbar-brand" routerLink="/home">HSN Bank {{page}} Page</a>
+   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>

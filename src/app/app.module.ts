@@ -11,6 +11,7 @@ import { HeaderComponent } from './header/header.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HighlightDirective } from './directives/highlight.directive';
 import { HistoryComponent } from './history/history.component';
+import { EditHistoryComponent } from './edit-history/edit-history.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { HistoryComponent } from './history/history.component';
     HeaderComponent,
     ProfileComponent,
     HighlightDirective,
-    HistoryComponent
+    HistoryComponent,
+    EditHistoryComponent
   ],
   imports: [
     BrowserModule,

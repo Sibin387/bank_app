@@ -5,6 +5,7 @@ import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HistoryComponent } from './history/history.component';
+import { EditHistoryComponent } from './edit-history/edit-history.component';
 
 
 const routes: Routes = [
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path:'home', component: HomeComponent},
   { path:'profile', component: ProfileComponent},
   { path:'history', component: HistoryComponent},
+  { path:'edit-history/:id', component: EditHistoryComponent},
 ];
 
 @NgModule({

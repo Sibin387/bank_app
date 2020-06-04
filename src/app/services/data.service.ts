@@ -17,6 +17,7 @@ export class DataService {
   constructor() {
     const accountDetails = localStorage.getItem('accountDetails');
     const data = JSON.parse(accountDetails);
+    
     if(data){
       this.accountDetails = data;
     }
@@ -38,6 +39,15 @@ export class DataService {
 
   saveAccountDetails(accountDetails){
     this.accountDetails[this.accno]=accountDetails;
+    this.saveUserData();
+    alert("Account details saved successfully");
+  }
+
+  saveHistory(id, newHistory){
+    const history = this.accountDetails[this.accno].history.find(h=>h.id==id);
+    history.amount = newHistory.amount;
+    history.type = newHistory.type;
+    history.date = newHistory.date;
     this.saveUserData();
     alert("Account details saved successfully");
   }
@@ -90,7 +100,7 @@ export class DataService {
     if(!this.accountDetails[accno].history){
       this.accountDetails[accno].history=[];
     }
-    this.accountDetails[accno].history.push({ amount:amount, type:'credit', date: new Date()});
+    this.accountDetails[accno].history.push({ id:Math.floor(Math.random()*100000), amount:amount, type:'credit', date: new Date()});
     console.log(this.accountDetails[accno]);
     this.saveUserData();
     alert("Amount added successfully");
@@ -111,7 +121,7 @@ export class DataService {
     if(!this.accountDetails[accno].history){
       this.accountDetails[accno].history=[];
     }
-    this.accountDetails[accno].history.push({ amount:amount, type:'debit', date: new Date()});
+    this.accountDetails[accno].history.push({ id:Math.floor(Math.random()*100000), amount:amount, type:'debit', date: new Date()});
     console.log(this.accountDetails[accno]);
     this.saveUserData();
     alert("Amount withdrawn successfully");
