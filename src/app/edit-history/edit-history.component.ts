@@ -13,7 +13,7 @@ export class EditHistoryComponent implements OnInit {
 
   editForm = this.fb.group({
     amount:[],
-    type:[],
+    typeOfAction:[],
     date:[],
   });
   accountDetails:any={};
@@ -22,15 +22,17 @@ export class EditHistoryComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router:Router) {
     this.accountDetails = dataService.getAccountDetails();
-    console.log(this.accountDetails);
     this.activatedRoute.params.subscribe(data=>{
       this.id = data.id;
-      const history = this.accountDetails.history.find(history=>history.id==data.id);
-      this.editForm.setValue({
-        amount:history.amount,
-        type:history.type,
-        date:formatDate(history.date,'yyyy-MM-dd','en')
-      })
+      dataService.getHistory()
+      .subscribe((h:any)=>{
+        const history = h.find(d=>d._id==data.id);
+        this.editForm.setValue({
+          amount:history.amount,
+          typeOfAction:history.typeOfAction,
+          date:formatDate(history.date,'yyyy-MM-dd','en')
+        })
+      });
     })
   }
 
@@ -38,7 +40,9 @@ export class EditHistoryComponent implements OnInit {
   }
 
   onSubmit(){
-    this.dataService.saveHistory(this.id, this.editForm.value);
-    this.router.navigate(['history']);
+    this.dataService.saveHistory(this.id, this.editForm.value)
+    .subscribe((data:any)=>{
+      this.router.navigate(['history']);
+    })
   }
 }

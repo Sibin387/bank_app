@@ -14,12 +14,21 @@ export class HomeComponent implements OnInit {
   }
 
   checkBalance(){
-    alert(this.dataService.loggedInUser.balance);
+    this.dataService.getBalance()
+    .subscribe((data:any)=>{
+      alert(`Your balance is INR ${data.balance}`)
+    })
   }
   deposit(amount, mpin){
-    this.dataService.deposit(amount, mpin);
+    this.dataService.deposit(amount, mpin)
+    .subscribe((data:any)=>{
+      alert(data.message);
+    });
   }
   withdraw(amount, mpin){
-    this.dataService.withdraw(amount, mpin);
+    this.dataService.withdraw(amount, mpin)
+    .subscribe((data:any)=>{
+      alert(data.message);
+    });
   }
 }

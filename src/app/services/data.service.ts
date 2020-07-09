@@ -1,4 +1,10 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+const baseUrl = "http://localhost:9000/";
+const options = {
+  withCredentials: true
+};
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +20,7 @@ export class DataService {
   loggedInUser = null;
   accno = null;
   
-  constructor() {
+  constructor(private http:HttpClient) {
     const accountDetails = localStorage.getItem('accountDetails');
     const data = JSON.parse(accountDetails);
     
@@ -34,49 +40,37 @@ export class DataService {
   }
 
   getAccountDetails(){
-    return this.accountDetails[this.accno];
+    return this.http.get(`${baseUrl}profile`, options);
   }
 
   saveAccountDetails(accountDetails){
-    this.accountDetails[this.accno]=accountDetails;
-    this.saveUserData();
-    alert("Account details saved successfully");
+    return this.http.put(`${baseUrl}profile`, accountDetails, options);
   }
 
   saveHistory(id, newHistory){
-    const history = this.accountDetails[this.accno].history.find(h=>h.id==id);
-    history.amount = newHistory.amount;
-    history.type = newHistory.type;
-    history.date = newHistory.date;
-    this.saveUserData();
-    alert("Account details saved successfully");
+    return this.http.put(`${baseUrl}edit-history/${id}`, newHistory, options);
+  }
+
+  getHistory(){
+    return this.http.get(`${baseUrl}history`, options);
   }
 
   register(data){
-    this.accountDetails[data.accno]={
-      name: `${data.firstName} ${data.lastName}`,
-      mpin: data.mpin,
+    const postData={
+      firstName: data.firstName,
+      lastName: data.lastName,
       balance: 0,
+      accno: data.accno,
+      mpin: data.mpin,
     };
-    localStorage.setItem('accountDetails', JSON.stringify(this.accountDetails));
+    return this.http.post(`${baseUrl}register`, postData);
   }
   login(accno, mpin){
-    if(accno in this.accountDetails)
-    {
-      const pin = this.accountDetails[accno]["mpin"];
-      if(pin == mpin) 
-      {
-        this.loggedInUser = this.accountDetails[accno];
-        this.saveUserData();
-        localStorage.setItem('accno',accno);
-        this.accno = accno;
-        return true;
-      }
-      else{
-        return false;
-      } 
-    }
-    return false;
+    const postData = {
+      accno,
+      mpin
+    };
+    return this.http.post(`${baseUrl}login`, postData,options);
   }
 
   saveUserData(){
@@ -85,45 +79,22 @@ export class DataService {
   }
 
   logout(){
-    localStorage.removeItem('accountDetails');
-    localStorage.removeItem('accno');
+    return this.http.post(`${baseUrl}logout`,{},options);
   }
 
   deposit(amount, mpin){
-    if(this.loggedInUser.mpin!=mpin){
-      alert("Invalid mpin");
-      return false;
-    }
-    this.loggedInUser.balance= parseFloat(this.loggedInUser.balance)+parseFloat(amount);
-    const accno = localStorage.getItem('accno');
-    this.accountDetails[accno].balance=this.loggedInUser.balance;
-    if(!this.accountDetails[accno].history){
-      this.accountDetails[accno].history=[];
-    }
-    this.accountDetails[accno].history.push({ id:Math.floor(Math.random()*100000), amount:amount, type:'credit', date: new Date()});
-    console.log(this.accountDetails[accno]);
-    this.saveUserData();
-    alert("Amount added successfully");
+    return this.http.post(`${baseUrl}deposit`,{
+      amount, mpin
+    },options);
   }
 
   withdraw(amount, mpin){
-    if(this.loggedInUser.mpin!=mpin){
-      alert("Invalid mpin");
-      return false;
-    }
-    if(this.loggedInUser.balance<amount){
-      alert("Insufficient balance");
-      return false;
-    }
-    this.loggedInUser.balance= parseFloat(this.loggedInUser.balance) -parseFloat(amount);
-    const accno = localStorage.getItem('accno');
-    this.accountDetails[accno].balance=this.loggedInUser.balance;
-    if(!this.accountDetails[accno].history){
-      this.accountDetails[accno].history=[];
-    }
-    this.accountDetails[accno].history.push({ id:Math.floor(Math.random()*100000), amount:amount, type:'debit', date: new Date()});
-    console.log(this.accountDetails[accno]);
-    this.saveUserData();
-    alert("Amount withdrawn successfully");
+    return this.http.post(`${baseUrl}withdraw`,{
+      amount, mpin
+    },options);
+  }
+
+  getBalance(){
+    return this.http.get(`${baseUrl}balance`,options);
   }
 }

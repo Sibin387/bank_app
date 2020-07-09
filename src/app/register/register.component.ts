@@ -33,8 +33,14 @@ export class RegisterComponent implements OnInit {
     return this.registerForm.get(controlName);
   }
   register(){
-    this.dataService.register(this.registerForm.value);
-    alert("Registration successful");
-    this.router.navigate(['']);
+    this.dataService.register(this.registerForm.value)
+    .subscribe(data =>{
+      console.log(data);
+      alert("Registration successful");
+      this.router.navigate(['']);
+    }, err=>{
+      console.log(err);
+      alert(err.error.message);
+    })
   }
 }

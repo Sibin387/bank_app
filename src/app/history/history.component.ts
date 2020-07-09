@@ -9,10 +9,13 @@ import { Router } from '@angular/router';
 })
 export class HistoryComponent implements OnInit {
   page="history";
-  accountDetails:any = {};
+  accountDetails:any = [];
   constructor(private dataService: DataService, private router:Router) {
-    this.accountDetails = dataService.getAccountDetails();
-    console.log(this.accountDetails);
+    dataService.getHistory()
+    .subscribe((data:any)=>{
+      console.log(data)
+      this.accountDetails=data;
+    });
   }
 
   ngOnInit(): void {

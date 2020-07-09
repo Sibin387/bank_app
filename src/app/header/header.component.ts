@@ -17,8 +17,10 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(){
-    this.dataSerice.logout();
-    this.router.navigate(['']);
+    this.dataSerice.logout()
+    .subscribe((data:any)=>{
+      this.router.navigate(['']);
+    });
   }
   profileClick(){
     this.clicked.emit(1);

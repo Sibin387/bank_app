@@ -33,12 +33,14 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    const success= this.ds.login(this.loginForm.value.accno,this.loginForm.value.mpin);
-    if(success){
+    this.ds.login(this.loginForm.value.accno,this.loginForm.value.mpin)
+    .subscribe(data=>{
+      console.log(data);
       this.router.navigate(['/home']);
-    }else{
+    },err=>{
+      console.log(err);
       alert("Invalid credentials");
-    }
+    })
   }
   getError(controlName){
     return this.loginForm.get(controlName).errors;

@@ -11,10 +11,16 @@ export class ProfileComponent implements OnInit {
   clickCount=0;
   accountDetails:any={};
   constructor(private dataService: DataService) {
-    this.accountDetails = dataService.getAccountDetails();
   }
 
   ngOnInit(): void {
+    this.dataService.getAccountDetails()
+    .subscribe((data:any)=>{
+      console.log(data);
+      this.accountDetails.name = data.name;
+      this.accountDetails.mpin = data.mpin;
+      this.accountDetails.balance = data.balance;
+    });
   }
   
   onHeaderClick(e){
@@ -22,8 +28,12 @@ export class ProfileComponent implements OnInit {
     this.clickCount++;
   }
 
-  onSave(value){
-    this.accountDetails.name = value;
-    this.dataService.saveAccountDetails(this.accountDetails);
+  onSave(name, mpin){
+    this.accountDetails.name = name;
+    this.accountDetails.mpin = mpin;
+    this.dataService.saveAccountDetails(this.accountDetails)
+    .subscribe((data:any)=>{
+      alert(data.message);
+    });
   }
 }
